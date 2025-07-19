@@ -1,6 +1,5 @@
 #include "../front.h"
 #include <cstdio>
-#include "../../mem/front.h"
 
 using namespace crk::io;
 
@@ -64,20 +63,17 @@ public:
 class _impl_RealDisk : public IDisk
 {
 public:
-	static constexpr u64 tag = crk::com::TagFromString("rdisk");
 	_impl_RealDisk()
 	{
-		crk::mem::CreateContext();
-		crk::mem::RegisterTag(tag, "Physical disk");
 	}
 	const char *GetName() const { return "PHYSICAL"; }
 	IStream *OpenFile(const char *path, OpenMode mode)
 	{
-		return crk::mem::Alloc<_impl_cstdioFile>(tag, path, mode);
+		return new _impl_cstdioFile(path, mode);
 	};
 	void CloseFile(IStream *file)
 	{
-		crk::mem::Free(file, tag);
+		delete file;
 	}
 };
 
