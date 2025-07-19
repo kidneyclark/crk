@@ -7,10 +7,22 @@
 
 namespace crk
 {
-const u64 string_tag = COM_4CHAR_TAG('_', 's', 't', 'r');
-template <u64 _tag = string_tag>
-using string =
-    std::basic_string<char, std::char_traits<char>, mem_Allocator<char, _tag>>;
+
+using string_type =
+    std::basic_string<char, std::char_traits<char>, mem::Allocator<char>>;
+
+class string : public string_type
+{
+	static constexpr u64 generic_tag = crk::com::TagFromString("crkstr");
+public:
+	explicit string(u64 tag = generic_tag)
+	    : crk::string_type(mem::Allocator<char>(tag))
+	{
+		if (tag == generic_tag && !crk::mem::IsTagRegistered(tag))
+			crk::mem::RegisterTag(tag, "crk::string");
+	}
+};
+
 } // namespace crk
 
 #endif

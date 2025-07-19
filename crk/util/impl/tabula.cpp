@@ -10,7 +10,7 @@ constexpr u64 Tabula_Tag = COM_4CHAR_TAG('t', 'a', 'b', '1');
 
 Tabula::Tabula()
 {
-	mem_CreateContext();
+	mem::CreateContext();
 }
 
 const char *Tabula::operator[](size_t index) const
@@ -40,7 +40,7 @@ size_t Tabula::AddStringSafe(const char *str, size_t str_length)
 	if (new_size > chunk.size)
 	{
 		size_t new_cap = (new_size + (1<<PADDING_BITS)) & ~((1<<PADDING_BITS)-1);
-		chunk = mem_ReallocChunk(chunk, new_cap, Tabula_Tag);
+		chunk = mem::ReallocChunk(chunk, new_cap, Tabula_Tag);
 	}
 	size = new_size;
 	strcpy(((char*)chunk.data + start_pos), str);
@@ -64,7 +64,7 @@ size_t Tabula::Size() const
 void Tabula::Clear()
 {
 	string_table.clear();
-	mem_FreeChunk(chunk, Tabula_Tag);
+	mem::FreeChunk(chunk, Tabula_Tag);
 	chunk.data = nullptr;
 	chunk.size = 0;
 	size = 0;

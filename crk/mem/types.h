@@ -3,7 +3,10 @@
 
 #include "../com/types.h"
 
-struct mem_Chunk
+namespace crk::mem
+{
+
+struct Chunk
 {
 	void *data;
 	u64 size;
@@ -12,12 +15,14 @@ struct mem_Chunk
 // Facilitates the use of mem_Chunk.
 // Stores '.count' elements of T.
 template <typename T>
-struct mem_Array
+struct Array
 {
 	T *array;
 	u64 count;
 
 	T &operator[](size_t idx) { return array[idx]; }
 };
+
+}
 
 #endif

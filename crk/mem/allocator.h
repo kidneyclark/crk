@@ -5,10 +5,13 @@
 #include "front.h"
 #include <cstddef>
 
-// std compatible allocator
-template <typename T, u64 m_Tag> class mem_Allocator
+namespace crk::mem
 {
-      public:
+// std compatible allocator
+template <typename T> class Allocator
+{
+	u64 tag {0};
+public:
 	typedef T value_type;
 	typedef value_type *pointer;
 	typedef const value_type *const_pointer;
@@ -19,45 +22,45 @@ template <typename T, u64 m_Tag> class mem_Allocator
 
 	template <class U> struct rebind
 	{
-		typedef mem_Allocator<U, m_Tag> other;
+		typedef Allocator<U> other;
 	};
 
-	mem_Allocator(mem_Allocator<T, m_Tag> const &) noexcept
+	Allocator(Allocator<T> const &) noexcept
 	{
 	}
-	template <class U>
-	mem_Allocator(mem_Allocator<U, m_Tag> const &) noexcept
+	template <class U> Allocator(Allocator<U> const &) noexcept
 	{
 	}
-	~mem_Allocator() = default;
+	~Allocator() = default;
 
-	mem_Allocator() noexcept
+	Allocator(u64 _tag) noexcept
+		: tag(_tag)
 	{
-		if (mem_GetContext() == nullptr)
-			mem_CreateContext();
+		if (crk::mem::GetContext() == nullptr)
+			crk::mem::CreateContext();
 	}
 
 	value_type *allocate(std::size_t n)
 	{
-		//printf("mem_Allocate(%llu)\n", n * sizeof(value_type));
+		// printf("mem_Allocate(%llu)\n", n * sizeof(value_type));
 		return reinterpret_cast<value_type *>(
-		    mem_AllocChunk(n * sizeof(value_type), m_Tag).data);
+		    AllocChunk(n * sizeof(value_type), tag).data);
 	}
 
-	void deallocate(mem_Allocator<T, m_Tag>::value_type *p,
-	                std::size_t n) noexcept
+	void deallocate(Allocator<T>::value_type *p, std::size_t n) noexcept
 	{
-		//printf("mem_Deallocate\n");
-		mem_FreeChunk((mem_Chunk){p, n}, m_Tag);
+		// printf("mem_Deallocate\n");
+		FreeChunk((Chunk){p, n}, tag);
 	}
-	bool operator==(mem_Allocator<T, m_Tag> const &a)
+	bool operator==(Allocator<T> const &a)
 	{
 		return this == &a;
 	}
-	bool operator!=(mem_Allocator<T, m_Tag> const &a)
+	bool operator!=(Allocator<T> const &a)
 	{
 		return !operator==(a);
 	}
 };
+} // namespace crk::mem
 
 #endif

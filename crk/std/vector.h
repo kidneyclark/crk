@@ -1,16 +1,26 @@
 #ifndef CRK_VECTOR_H
 #define CRK_VECTOR_H
 
-#include <vector>
-#include "../mem/allocator.h"
 #include "../com/defs.h"
+#include "../mem/allocator.h"
+#include <vector>
 
 namespace crk
 {
-const u64 vector_tag = COM_4CHAR_TAG('_', 'v', 't', 'r');
-template <typename T, u64 _tag = vector_tag>
-using vector =
-    std::vector<T, mem_Allocator<T, _tag>>;
-}
+
+template <typename T>
+class vector : public std::vector<T>
+{
+	static constexpr u64 generic_tag = crk::com::TagFromString("vector");
+public:
+	explicit vector(u64 tag = generic_tag)
+	    : std::vector<T>(mem::Allocator<T>(tag))
+	{
+		if (tag == generic_tag && !crk::mem::IsTagRegistered(tag))
+			crk::mem::RegisterTag(tag, "crk::vector");
+	}
+};
+
+} // namespace crk
 
 #endif

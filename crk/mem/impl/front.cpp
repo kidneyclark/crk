@@ -1,5 +1,6 @@
 #include "../front.h"
 
+
 #include <assert.h>
 #include <list>
 #include <map>
@@ -18,10 +19,15 @@ struct _impl_mem_Context
 	std::map<u64, const char *> tagMap;
 };
 
-COM_CONTEXT_IMPL(mem)
+COM_CONTEXT_IMPL(mem);
 
-mem_Chunk mem_AllocChunk(u64 size, u64 tag)
+namespace crk::mem
 {
+
+Chunk AllocChunk(u64 size, u64 tag)
+{
+	assert((tag != 0) && "0 is an invalid tag!");
+	::crk::mem::Context a;
 	assert(size > 0);
 
 	_impl_mem_Chunk chunk = {
@@ -34,7 +40,7 @@ mem_Chunk mem_AllocChunk(u64 size, u64 tag)
 	return {.data = chunk.data, .size = chunk.size};
 }
 
-void mem_FreeChunk(mem_Chunk chunk, u64 tag)
+void FreeChunk(Chunk chunk, u64 tag)
 {
 	if (chunk.data == nullptr) return;
 	auto it = g_CurrentContext->chunkList.begin();
@@ -61,15 +67,15 @@ void mem_FreeChunk(mem_Chunk chunk, u64 tag)
 	}
 }
 
-mem_Chunk mem_ReallocChunk(mem_Chunk chunk, u64 size, u64 tag)
+Chunk ReallocChunk(Chunk chunk, u64 size, u64 tag)
 {
-	mem_Chunk new_chunk = mem_AllocChunk(size, tag);
+	Chunk new_chunk = AllocChunk(size, tag);
 	memcpy(new_chunk.data, chunk.data, new_chunk.size < chunk.size ? new_chunk.size : chunk.size);
-	mem_FreeChunk(chunk, tag);
+	FreeChunk(chunk, tag);
 	return new_chunk;
 }
 
-void mem_Dump(std::ostream &out)
+void Dump(std::ostream &out)
 {
 	int count = 1;
 	out << "Dumping memory module!\n";
@@ -94,11 +100,19 @@ L_End:
 	out.flush();
 }
 
-void mem_RegisterTag(u64 tag, const char *name)
+void RegisterTag(u64 tag, const char *name)
 {
 	assert(name != nullptr);
 	auto tagName = g_CurrentContext->tagMap.find(tag);
 	assert((tagName == g_CurrentContext->tagMap.end()) &&
 	       "Already existing tag");
 	g_CurrentContext->tagMap[tag] = name;
+}
+
+bool IsTagRegistered(u64 tag)
+{
+	auto tagName = g_CurrentContext->tagMap.find(tag);
+	return (tagName != g_CurrentContext->tagMap.end());
+}
+
 }

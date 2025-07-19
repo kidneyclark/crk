@@ -1,5 +1,5 @@
-#ifndef CRK_TABULA_H
-#define CRK_TABULA_H
+#ifndef CRK_UTIL_TABULA_H
+#define CRK_UTIL_TABULA_H
 
 #include "../mem/front.h"
 #include "../std/vector.h"
@@ -10,6 +10,8 @@ namespace crk
 class Tabula
 {
 public:
+	using pos_type = size_t;
+
 	Tabula();
 
 	const char *operator[](size_t index) const;
@@ -23,10 +25,11 @@ public:
 
 private:
 	static constexpr size_t PADDING_BITS = 8;
-	mem_Chunk chunk {nullptr, 0};
+	mem::Chunk chunk {nullptr, 0};
 	crk::vector<size_t> string_table;
 	size_t size {0};
 };
+
 } // namespace crk
 
 #endif

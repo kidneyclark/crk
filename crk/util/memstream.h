@@ -1,5 +1,5 @@
-#ifndef CRK_MEMSTREAM_H
-#define CRK_MEMSTREAM_H
+#ifndef CRK_UTIL_MEMSTREAM_H
+#define CRK_UTIL_MEMSTREAM_H
 
 #include "../com/types.h"
 #include "../mem/types.h"
@@ -64,7 +64,7 @@ struct MemoryStream
 		MovePos(length);
 	}
 
-	mem_Chunk chunk;
+	mem::Chunk chunk;
 	size_t pos{0};
 	size_t size{0};
 };

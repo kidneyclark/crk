@@ -10,18 +10,18 @@ using namespace crk;
 MemoryStream::MemoryStream()
 	: chunk(nullptr, 0)
 {
-	mem_CreateContext();
+	mem::CreateContext();
 }
 
 MemoryStream::~MemoryStream()
 {
 	if (chunk.data != nullptr)
-		mem_FreeChunk(chunk, MemoryStream_tag);
+		mem::FreeChunk(chunk, MemoryStream_tag);
 }
 
 void MemoryStream::SetCapacity(size_t new_capacity)
 {
-	chunk = mem_ReallocChunk(chunk, new_capacity, MemoryStream_tag);
+	chunk = mem::ReallocChunk(chunk, new_capacity, MemoryStream_tag);
 
 	if (size > chunk.size)
 		size = chunk.size; // size shrunken
