@@ -1,0 +1,4 @@
+[submodule "external/simdjson"]
+	path = external/simdjson
+	url = https://github.com/simdjson/simdjson.git
+	shallow = true

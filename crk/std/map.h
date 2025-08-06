@@ -2,6 +2,7 @@
 #define CRK_MAP_H
 
 #include <map>
+/*#include <map>
 
 namespace std
 {
@@ -16,6 +17,6 @@ struct str_less
 
 template <typename T> using string_map = map<const char *, T, str_less>;
 
-} // namespace std
+} // namespace std*/
 
 #endif

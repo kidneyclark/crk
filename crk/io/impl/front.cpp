@@ -7,7 +7,7 @@ class _impl_cstdioFile : public IStream
 {
 private:
 	IDisk::OpenMode openMode;
-	FILE *file;
+	FILE *file {nullptr};
 public:
 	_impl_cstdioFile(const char *path, IDisk::OpenMode mode)
 	{
@@ -25,6 +25,10 @@ public:
 		fclose(file);
 	}
 
+	virtual bool IsValid()
+	{
+		return file != nullptr;
+	}
 	virtual void Flush()
 	{
 		fflush(file);
