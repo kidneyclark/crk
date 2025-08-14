@@ -1,7 +1,8 @@
-#ifndef CRK_COM_TYPES_H
-#define CRK_COM_TYPES_H
+#ifndef CRK_COM_H
+#define CRK_COM_H
 
-#include <stdint.h>
+#include <inttypes.h>
+#include <stdbool.h>
 
 typedef uint64_t u64;
 typedef uint32_t u32;
@@ -15,5 +16,8 @@ typedef int8_t i8;
 
 typedef float f32;
 typedef double f64;
+
+#define CRKCALL
+#define CRKDECLSPEC
 
 #endif
