@@ -2,3 +2,7 @@
 	path = external/simdjson
 	url = https://github.com/simdjson/simdjson.git
 	shallow = true
+[submodule "external/cglm"]
+	path = external/cglm
+	url = https://github.com/recp/cglm.git
+	shallow = true
