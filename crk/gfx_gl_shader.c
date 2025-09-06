@@ -8,6 +8,7 @@ CRK_Shader *CRK_ShaderCreate(const char *path)
 	CRK_File *file = CRK_GetResourceFile(path);
 	assert(file != NULL && "Invalid Resource File!");
 	const char *ext = CRK_GetPathExtension(path);
+	assert(strcmp(file != NULL && "Invalid Resource File!");
 	CRK_MemStream *fileData = CRK_FileDumpAsMemStream(file);
 	CRK_FileClose(file);
 
