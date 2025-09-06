@@ -16,6 +16,7 @@ extern CRKDECLSPEC void CRKCALL CRK_TabulaDestroy(CRK_Tabula *tab);
 // O(logN) because theres a binary tree behind this.
 extern CRKDECLSPEC const char *CRKCALL CRK_TabulaFind(CRK_Tabula *tab, const char *str);
 // returns NULL if there was a problem.
+// does not add if already exists. (internally finds string)
 extern CRKDECLSPEC const char *CRKCALL CRK_TabulaAdd(CRK_Tabula *tab, const char *str);
 
 extern CRKDECLSPEC CRK_Tabula *CRKCALL CRK_TabulaGetGlobal();

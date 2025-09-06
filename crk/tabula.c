@@ -118,7 +118,7 @@ const char *CRK_TabulaAdd(CRK_Tabula *tab, const char *str)
 	{
 		int cmp = strcmp(findNode->str, str);
 		if (cmp == 0)
-			assert (false && "string already exists in tabula smh");
+			//assert (false && "string already exists in tabula smh");
 			return ret;
 		if (cmp < 0)
 			next = &findNode->left;

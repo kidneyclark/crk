@@ -1,10 +1,13 @@
 #include "thread_internal.h"
 
 #include <stdlib.h>
+#include "mem.h"
+
+// CRK_Thread
 
 CRK_Thread *CRK_ThreadCreate(CRK_ThreadFunc func, void *args)
 {
-	CRK_Thread *thread = malloc(sizeof *thread);
+	CRK_Thread *thread = CRK_Malloc(sizeof *thread);
 	pthread_create(&thread->posixThread, NULL, func, args);
 	return thread;
 }
@@ -12,18 +15,20 @@ CRK_Thread *CRK_ThreadCreate(CRK_ThreadFunc func, void *args)
 void CRK_ThreadJoin(CRK_Thread *thread, void **ret)
 {
 	pthread_join(thread->posixThread, ret);
-	free(thread);
+	CRK_Free(thread);
 }
 
 void CRKCALL CRK_ThreadDetach(CRK_Thread *thread)
 {
 	pthread_detach(thread->posixThread);
-	free(thread);
+	CRK_Free(thread);
 }
+
+// CRK_Mutex
 
 CRK_Mutex *CRK_MutexCreate()
 {
-	CRK_Mutex *mtx = malloc(sizeof *mtx);
+	CRK_Mutex *mtx = CRK_Malloc(sizeof *mtx);
 	pthread_mutex_init(&mtx->posixMutex, NULL);
 	return mtx;
 }
@@ -31,7 +36,7 @@ CRK_Mutex *CRK_MutexCreate()
 void CRK_MutexDestroy(CRK_Mutex *mtx)
 {
 	pthread_mutex_destroy(&mtx->posixMutex);
-	free(mtx);
+	CRK_Free(mtx);
 }
 
 void CRK_MutexLock(CRK_Mutex *mtx)
@@ -44,9 +49,11 @@ void CRK_MutexUnlock(CRK_Mutex *mtx)
 	pthread_mutex_unlock(&mtx->posixMutex);
 }
 
+// CRK_CondVar
+
 CRK_CondVar *CRK_CondVarCreate()
 {
-	CRK_CondVar *cv = malloc(sizeof *cv);
+	CRK_CondVar *cv = CRK_Malloc(sizeof *cv);
 	pthread_cond_init(&cv->posixCond, NULL);
 	return cv;
 }
@@ -54,7 +61,7 @@ CRK_CondVar *CRK_CondVarCreate()
 void CRK_CondVarDestroy(CRK_CondVar *cv)
 {
 	pthread_cond_destroy(&cv->posixCond);
-	free(cv);
+	CRK_Free(cv);
 }
 
 void CRK_CondVarWait(CRK_CondVar *cv, CRK_Mutex *mtx)

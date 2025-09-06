@@ -137,6 +137,7 @@ CRK_MemStream *CRK_FileDumpAsMemStream(CRK_File *file)
 {
 	u64 size, tell;
 	CRK_MemStream *stream;
+	assert(file != NULL && "Dumping NULL file!");
 
 	size = CRK_FileGetSize(file);
 	stream = CRK_MemStreamCreate(size);
